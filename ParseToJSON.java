@@ -2,10 +2,9 @@ import java.io.*;
 import java.util.HashMap;
 public class ParseToJSON {
     public static void main(String[] args) {
-        int passengers = 5;
-        System.out.println(passengers);
         String file = "EjemploCSV.csv";
         BufferedReader reader = null;
+        BufferedWriter writer;
         String line = "";
         String cvsSplitBy = ",";
         Integer counter = 0;
@@ -29,8 +28,23 @@ public class ParseToJSON {
                 }
                 }
             }
-            System.out.println(data.get("SCOPUS_ID"));
-            // System.out.println(keys);
+            try {
+                writer = new BufferedWriter(new FileWriter("EjemploJSON.json"));
+                writer.write("{");
+                writer.newLine();
+                for (int i = 0; i < keys.length; i++) {
+                    writer.write("\"" + keys[i] + "\": \"" + data.get(keys[i]) + "\"");
+                    if (i != keys.length - 1) {
+                        writer.write(",");
+                    }
+                    writer.newLine();
+                }
+                writer.write("}");
+                writer.close();
+                System.out.println("JSON file created");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
