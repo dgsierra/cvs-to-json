@@ -8,20 +8,29 @@ public class ParseToJSON {
         BufferedReader reader = null;
         String line = "";
         String cvsSplitBy = ",";
-        Integer counter = 22;
+        Integer counter = 0;
         HashMap<String, String> data = new HashMap<String, String>();
 
         try {
             reader = new BufferedReader(new FileReader(file));
-            // System.out.println(reader.readLine());
+            String[] keys = new String[0];
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(cvsSplitBy);
-                for (int i = 0; i < 20 ; i++) {
-                    data.put(row[i], "");
+                if (counter == 0) {
+                    keys = row;
+                    for (int i = 0; i < row.length ; i++) {
+                        data.put(row[i], "");
+                        counter++;
+                    }
                 }
-                System.out.println(data);
-                System.out.println(data.keySet());
+                else {
+                    for (int i = 0; i < row.length ; i++) {
+                        data.replace(keys[i], row[i]);
+                }
+                }
             }
+            System.out.println(data.get("SCOPUS_ID"));
+            // System.out.println(keys);
         }
         catch (Exception e) {
             e.printStackTrace();
